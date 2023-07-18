@@ -1,7 +1,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="com.web.common.DBCon"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/include/common.jsp" %>
@@ -14,27 +14,25 @@
 <body>
 <%
 	String miNum = request.getParameter("miNum");
-	
 	Connection con = DBCon.getCon();
-	String sql = "SELECT MI_NUM, MI_TITLE, MI_DESC, MI_GENRE, MI_CREDATE, MI_CNT FROM MOVIE_INFO";
-	sql += " WHERE MI_NUM=?";
+	String sql = "SELECT MI_NUM, MI_TITLE, MI_DESC, MI_GENRE, MI_CREDATE, MI_CNT FROM movie_info WHERE MI_NUM = ?";
 	PreparedStatement pstmt = con.prepareStatement(sql);
 	pstmt.setString(1, miNum);
 	ResultSet rs = pstmt.executeQuery();
+	
 	if(!rs.next()) {
 %>
 		<script>
 			alert("이미 삭제된");
-			location.href = '<%=root%>/movie/movie-list.jsp';
+			location.href='<%=root%>/movie2/movie2-list.jsp';
 		</script>
 <%
-		return;		// return 안하면 if문 아래것까지 실행되는데 그걸 막으려고하는거임
+		return;
 	}
-//	System.out.println(rs.getString("MI_TITLE");	if문에서 return 안한 상태에서 이게 실행되면 오류남
 %>
 <table border="15" style="border-color: green; border-style: dashed;">
 	<tr>
-		<th>등록번호</th>
+		<th>번호</th>
 		<td><%=rs.getString("MI_NUM") %></td>
 	</tr>
 	<tr>
@@ -42,15 +40,15 @@
 		<td><%=rs.getString("MI_TITLE") %></td>
 	</tr>
 	<tr>
-		<th>장르</th>
-		<td><%=rs.getString("MI_GENRE") %></td>
-	</tr>
-	<tr>
 		<th>설명</th>
 		<td><%=rs.getString("MI_DESC") %></td>
 	</tr>
 	<tr>
-		<th>상영일</th>
+		<th>장르</th>
+		<td><%=rs.getString("MI_GENRE") %></td>
+	</tr>
+	<tr>
+		<th>개봉일</th>
 		<td><%=rs.getString("MI_CREDATE") %></td>
 	</tr>
 	<tr>
@@ -58,8 +56,8 @@
 		<td><%=rs.getString("MI_CNT") %></td>
 	</tr>
 	<tr>
-		<th colspan="7" align="right">
-			<button onclick="location.href='<%=root%>/movie/movie-update.jsp?miNum=<%=miNum%>'">수정</button>
+		<th colspan="5" align="right">
+			<button onclick="location.href='<%=root %>/movie2/movie2-update.jsp?miNum=<%=miNum%>'">수정</button>
 		</th>
 	</tr>
 </table>
